@@ -8,6 +8,9 @@ app.use(express.static('public'))
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
+// app.get('/game', function(req, res){
+//     res.sendFile(__dirname + '/game.html');
+//   });
 
 var users = [];
 
@@ -19,6 +22,7 @@ io.on('connection', function(socket){
             var index = users.indexOf(socket.nickname);
             users.splice(index, 1);
             console.log('user discnonnected - ' + socket.nickname)
+            io.emit('userlist',users)
         } else {
             console.log('user disconnected - no name');
         }
@@ -31,12 +35,17 @@ io.on('connection', function(socket){
             users.push(nickname)
             socket.nickname = nickname;
             console.log(users);
+            socket.emit('username-set',true)
         }
+    });
+
+    socket.on('get-users', function() {
+        io.emit('userlist',users)
     });
 
     socket.on('chat message', function(msg){
         console.log('message: ' + socket.nickname + ': ' + msg.msg);
-        io.emit('chat message', msg);
+        io.emit('chat message', {name: socket.nickname, msg: msg.msg});
     });
   });
 

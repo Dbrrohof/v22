@@ -10,8 +10,7 @@
         <div class="players">
             <h1>Players</h1>
             <hr>
-            <div class="player-list">
-                <h1>kooce</h1>
+            <div class="player-list" id="player-list">
             </div>
         </div>
         <div class="Time">
@@ -26,38 +25,23 @@
             <div class="input">
                 <i class="fas fa-paperclip"></i>
                 <input type="text" id="msgInput" placeholder="Message your group">
-                <i class="fas fa-paper-plane"></i>
+                <i class="fas fa-paper-plane" id="sendMsg"></i>
             </div>
         </div>
     </div>
 
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <input type="text" name="username" id="username">
+            <button id="join-room">Join Room!</button>
+        </div>
+        
+    </div>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    <script>
-        // set name local
-        
-
-        // init socket.io
-        $(function () {
-        var socket = io();
-
-        $( "#setNameBtn" ).click(function() {
-            nameInput = $("#name").val();
-            socket.emit('send-nickname',nameInput);
-        });
-        
-        // send chat msg
-        $('#sendMsg').click(function(){
-            nameGet = localStorage.getItem("name");
-            msgGet = $('#msg').val();
-            socket.emit('chat message',{name:nameGet, msg: msgGet});
-        });
-
-        // get chat msg
-        socket.on('chat message', function(msg){
-            console.log(msg)
-        });
-        });
-    </script>
+    <script src="js/socketio.js"></script>
   </body>
 </html>
